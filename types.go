@@ -6,6 +6,8 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+
+	nsstrconv "github.com/NlaakStudios/gocsv/strconv"
 )
 
 // --------------------------------------------------------------------------
@@ -95,7 +97,7 @@ func toBool(in interface{}) (bool, error) {
 		case "no", "":
 			return false, nil
 		default:
-			return strconv.ParseBool(s)
+			return nsstrconv.ParseBool(s)
 		}
 	case reflect.Bool:
 		return inValue.Bool(), nil
