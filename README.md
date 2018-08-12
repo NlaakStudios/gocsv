@@ -5,13 +5,22 @@ The GoCSV package aims to provide easy serialization and deserialization functio
 
 API and techniques inspired from https://godoc.org/gopkg.in/mgo.v2
 
-[![GoDoc](https://godoc.org/github.com/gocarina/gocsv?status.png)](https://godoc.org/github.com/gocarina/gocsv)
+This version adds support for enhanced ParseBool() FormatBool():
+* Yes/No: y,Y,yes,Yes,YES and n,N,no,No,NO
+* Enabled/Disabled: e,E,enabled,Enabled,ENABLED and d,D,disabled,Disabled,DISABLED 
+* On/Off: on,On,ON and off,Off,OFF
+
+Note:
+* All Yes, Enabled and On's parse to boolean value of true.
+* All No, Disabled and Off's parse to boolean value of false.
+
+#[![GoDoc](https://godoc.org/github.com/gocarina/gocsv?status.png)](https://godoc.org/github.com/gocarina/gocsv)
 [![Build Status](https://travis-ci.org/gocarina/gocsv.svg?branch=master)](https://travis-ci.org/gocarina/gocsv)
 
 Installation
 =====
 
-```go get -u github.com/gocarina/gocsv```
+```go get -u github.com/NlaakStudios/gocsv```
 
 Full example
 =====
@@ -20,11 +29,11 @@ Consider the following CSV file
 
 ```csv
 
-client_id,client_name,client_age
-1,Jose,42
-2,Daniel,26
-3,Vincent,32
-
+client_id,client_name,client_age,enable_profile,over18,is_banned
+1,Jose,42,n,No,NO
+2,Daniel,26,Y,YES,y
+3,Vincent,32,enabled,false,disabled
+4,Harry,28,D,false,NO
 ```
 
 Easy binding in Go!
@@ -41,9 +50,12 @@ import (
 )
 
 type Client struct { // Our example struct, you can use "-" to ignore a field
-	Id      string `csv:"client_id"`
-	Name    string `csv:"client_name"`
-	Age     string `csv:"client_age"`
+	Id       string `csv:"client_id"`
+	Name     string `csv:"client_name"`
+	Age      string `csv:"client_age"`
+	Profile  bool   `csv:"enabled_profile"`
+	Over18   bool   `csv:"over18"`
+	IsBanned bool   `csv:"is_banned"`
 	NotUsed string `csv:"-"`
 }
 
